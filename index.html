@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ayush's Web Drawer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface2: #16161f;
+      --border: #1e1e2e;
+      --text: #e2e2f0;
+      --muted: #5a5a7a;
+      --accent-gaming: #ff4d6d;
+      --accent-productivity: #7c3aed;
+      --accent-ecommerce: #f59e0b;
+      --accent-movies: #06b6d4;
+      --accent-anime: #ec4899;
+      --accent-general: #10b981;
+      --accent-manga: #f97316;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Ambient glow */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(124,58,237,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 48px 40px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-left {}
+
+    .logo-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      line-height: 1;
+      background: linear-gradient(135deg, #e2e2f0 30%, #7c7ca0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, #a78bfa, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-meta {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      text-align: right;
+    }
+
+    .header-meta span {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .live-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── SEARCH ── */
+    .search-bar-wrap {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 28px auto 0;
+      padding: 0 40px;
+    }
+
+    .search-inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .search-inner:focus-within {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
+    }
+
+    .search-icon {
+      padding: 0 16px;
+      color: var(--muted);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    #search {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 14px 0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    #search::placeholder { color: var(--muted); }
+
+    .search-shortcut {
+      padding: 0 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      background: var(--surface2);
+      border-left: 1px solid var(--border);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 14px 14px;
+    }
+
+    /* ── NAV PILLS ── */
+    .cat-nav {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 24px auto 0;
+      padding: 0 40px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cat-pill {
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+
+    .cat-pill:hover,
+    .cat-pill.active {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--muted);
+    }
+
+    .cat-pill[data-filter="all"].active {
+      background: #7c3aed;
+      border-color: #7c3aed;
+      color: #fff;
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 40px auto 0;
+      padding: 0 40px 80px;
+    }
+
+    /* ── CATEGORY SECTION ── */
+    .category {
+      margin-bottom: 48px;
+      transition: opacity 0.3s;
+    }
+
+    .category.hidden { display: none; }
+
+    .cat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .cat-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .cat-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .cat-count {
+      margin-left: auto;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    .cat-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      min-width: 20px;
+    }
+
+    /* ── CARD GRID ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card:hover {
+      border-color: #2a2a3e;
+      background: var(--surface2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-favicon {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--border);
+    }
+
+    .card-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      margin-top: 2px;
+      align-self: flex-start;
+    }
+
+    /* ── CATEGORY COLOR THEMES ── */
+    /* Gaming */
+    [data-cat="gaming"] .cat-icon { background: rgba(255,77,109,0.12); color: var(--accent-gaming); }
+    [data-cat="gaming"] .cat-title { color: var(--accent-gaming); }
+    [data-cat="gaming"] .card::before { background: var(--accent-gaming); }
+    [data-cat="gaming"] .card-tag { background: rgba(255,77,109,0.12); color: var(--accent-gaming); }
+    [data-cat="gaming"] .card:hover { border-color: rgba(255,77,109,0.25); }
+
+    /* Productivity */
+    [data-cat="productivity"] .cat-icon { background: rgba(124,58,237,0.12); color: var(--accent-productivity); }
+    [data-cat="productivity"] .cat-title { color: var(--accent-productivity); }
+    [data-cat="productivity"] .card::before { background: var(--accent-productivity); }
+    [data-cat="productivity"] .card-tag { background: rgba(124,58,237,0.12); color: var(--accent-productivity); }
+    [data-cat="productivity"] .card:hover { border-color: rgba(124,58,237,0.25); }
+
+    /* Ecommerce */
+    [data-cat="ecommerce"] .cat-icon { background: rgba(245,158,11,0.12); color: var(--accent-ecommerce); }
+    [data-cat="ecommerce"] .cat-title { color: var(--accent-ecommerce); }
+    [data-cat="ecommerce"] .card::before { background: var(--accent-ecommerce); }
+    [data-cat="ecommerce"] .card-tag { background: rgba(245,158,11,0.12); color: var(--accent-ecommerce); }
+    [data-cat="ecommerce"] .card:hover { border-color: rgba(245,158,11,0.25); }
+
+    /* Movies */
+    [data-cat="movies"] .cat-icon { background: rgba(6,182,212,0.12); color: var(--accent-movies); }
+    [data-cat="movies"] .cat-title { color: var(--accent-movies); }
+    [data-cat="movies"] .card::before { background: var(--accent-movies); }
+    [data-cat="movies"] .card-tag { background: rgba(6,182,212,0.12); color: var(--accent-movies); }
+    [data-cat="movies"] .card:hover { border-color: rgba(6,182,212,0.25); }
+
+    /* Anime */
+    [data-cat="anime"] .cat-icon { background: rgba(236,72,153,0.12); color: var(--accent-anime); }
+    [data-cat="anime"] .cat-title { color: var(--accent-anime); }
+    [data-cat="anime"] .card::before { background: var(--accent-anime); }
+    [data-cat="anime"] .card-tag { background: rgba(236,72,153,0.12); color: var(--accent-anime); }
+    [data-cat="anime"] .card:hover { border-color: rgba(236,72,153,0.25); }
+
+    /* General */
+    [data-cat="general"] .cat-icon { background: rgba(16,185,129,0.12); color: var(--accent-general); }
+    [data-cat="general"] .cat-title { color: var(--accent-general); }
+    [data-cat="general"] .card::before { background: var(--accent-general); }
+    [data-cat="general"] .card-tag { background: rgba(16,185,129,0.12); color: var(--accent-general); }
+    [data-cat="general"] .card:hover { border-color: rgba(16,185,129,0.25); }
+
+    /* Manga */
+    [data-cat="manga"] .cat-icon { background: rgba(249,115,22,0.12); color: var(--accent-manga); }
+    [data-cat="manga"] .cat-title { color: var(--accent-manga); }
+    [data-cat="manga"] .card::before { background: var(--accent-manga); }
+    [data-cat="manga"] .card-tag { background: rgba(249,115,22,0.12); color: var(--accent-manga); }
+    [data-cat="manga"] .card:hover { border-color: rgba(249,115,22,0.25); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state.show { display: block; }
+
+    .empty-state svg {
+      width: 48px;
+      opacity: 0.3;
+      margin-bottom: 16px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-credit {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .footer-credit strong {
+      color: var(--text);
+    }
+
+    .footer-right {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: #2a2a3a;
+    }
+
+    /* ── TOOLTIP on card ── */
+    .card:active { transform: scale(0.98); }
+
+    /* ── NO-RESULT highlight ── */
+    .card.search-hidden { display: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      header, .search-bar-wrap, .cat-nav, main, footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .cards { grid-template-columns: 1fr 1fr; }
+      .header-meta { display: none; }
+    }
+
+    /* entrance animation */
+    .category {
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .category:nth-child(2) { animation-delay: 0.05s; }
+    .category:nth-child(3) { animation-delay: 0.1s; }
+    .category:nth-child(4) { animation-delay: 0.15s; }
+    .category:nth-child(5) { animation-delay: 0.2s; }
+    .category:nth-child(6) { animation-delay: 0.25s; }
+    .category:nth-child(7) { animation-delay: 0.3s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="logo-tag">// personal web drawer</div>
+    <h1>Ayush's <span>Vault</span></h1>
+  </div>
+  <div class="header-meta">
+    <span><span class="live-dot"></span>All links open in new tab</span>
+    <span>Feel free to explore</span>
+  </div>
+</header>
+
+<!-- SEARCH -->
+<div class="search-bar-wrap">
+  <div class="search-inner">
+    <span class="search-icon">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+    </span>
+    <input type="text" id="search" placeholder="Search any site or category…" autocomplete="off" spellcheck="false">
+    <span class="search-shortcut">CTRL + K</span>
+  </div>
+</div>
+
+<!-- CATEGORY FILTER PILLS -->
+<nav class="cat-nav" id="catNav">
+  <button class="cat-pill active" data-filter="all">All</button>
+  <button class="cat-pill" data-filter="gaming">🎮 Gaming</button>
+  <button class="cat-pill" data-filter="productivity">⚡ Productivity</button>
+  <button class="cat-pill" data-filter="ecommerce">🛒 E-commerce</button>
+  <button class="cat-pill" data-filter="movies">🎬 Movies</button>
+  <button class="cat-pill" data-filter="anime">✨ Anime</button>
+  <button class="cat-pill" data-filter="general">🌐 General</button>
+  <button class="cat-pill" data-filter="manga">📖 Manga</button>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+  <!-- GAMING -->
+  <section class="category" data-cat="gaming">
+    <div class="cat-header">
+      <div class="cat-icon">🎮</div>
+      <div class="cat-title">Gaming</div>
+      <div class="cat-line"></div>
+      <div class="cat-count" id="count-gaming">0 sites</div>
+    </div>
+    <div class="cards" id="cards-gaming">
+      <a class="card" href="https://fitgirl-repacks.site" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=fitgirl-repacks.site&sz=32" alt="">
+          <span class="card-name">FitGirl Repacks</span>
+        </div>
+        <div class="card-desc">Highly compressed game repacks for offline install</div>
+        <span class="card-tag">Pirated</span>
+      </a>
+      <a class="card" href="https://steamunlocked.net" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=steamunlocked.net&sz=32" alt="">
+          <span class="card-name">SteamUnlocked</span>
+        </div>
+        <div class="card-desc">Pre-installed games, no Steam required</div>
+        <span class="card-tag">Pirated</span>
+      </a>
+      <a class="card" href="https://www.g2a.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=g2a.com&sz=32" alt="">
+          <span class="card-name">G2A</span>
+        </div>
+        <div class="card-desc">Game key marketplace with huge discounts</div>
+        <span class="card-tag">Discount Keys</span>
+      </a>
+      <a class="card" href="https://gg.deals" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=gg.deals&sz=32" alt="">
+          <span class="card-name">GG.deals</span>
+        </div>
+        <div class="card-desc">Compare prices for games across all stores</div>
+        <span class="card-tag">Price Tracker</span>
+      </a>
+      <a class="card" href="https://isthereanydeal.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=isthereanydeal.com&sz=32" alt="">
+          <span class="card-name">IsThereAnyDeal</span>
+        </div>
+        <div class="card-desc">Game price history and deal alerts</div>
+        <span class="card-tag">Price Tracker</span>
+      </a>
+      <a class="card" href="https://www.nexusmods.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=nexusmods.com&sz=32" alt="">
+          <span class="card-name">Nexus Mods</span>
+        </div>
+        <div class="card-desc">Largest game modding community and repository</div>
+        <span class="card-tag">Mods</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- PRODUCTIVITY -->
+  <section class="category" data-cat="productivity">
+    <div class="cat-header">
+      <div class="cat-icon">⚡</div>
+      <div class="cat-title">Productivity</div>
+      <div class="cat-line"></div>
+      <div class="cat-count" id="count-productivity">0 sites</div>
+    </div>
+    <div class="cards" id="cards-productivity">
+      <a class="card" href="https://notebooklm.google.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=notebooklm.google.com&sz=32" alt="">
+          <span class="card-name">NotebookLM</span>
+        </div>
+        <div class="card-desc">AI-powered research and note-taking by Google</div>
+        <span class="card-tag">AI Tool</span>
+      </a>
+      <a class="card" href="https://gemini.google.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=32" alt="">
+          <span class="card-name">Gemini</span>
+        </div>
+        <div class="card-desc">Google's multimodal AI assistant</div>
+        <span class="card-tag">AI Tool</span>
+      </a>
+      <a class="card" href="https://claude.ai" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=32" alt="">
+          <span class="card-name">Claude</span>
+        </div>
+        <div class="card-desc">Anthropic's thoughtful AI assistant for complex tasks</div>
+        <span class="card-tag">AI Tool</span>
+      </a>
+      <a class="card" href="https://chatgpt.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=32" alt="">
+          <span class="card-name">ChatGPT</span>
+        </div>
+        <div class="card-desc">OpenAI's conversational AI model</div>
+        <span class="card-tag">AI Tool</span>
+      </a>
+      <a class="card" href="https://www.perplexity.ai" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=32" alt="">
+          <span class="card-name">Perplexity AI</span>
+        </div>
+        <div class="card-desc">AI-powered search with cited answers</div>
+        <span class="card-tag">AI Search</span>
+      </a>
+      <a class="card" href="https://excalidraw.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=excalidraw.com&sz=32" alt="">
+          <span class="card-name">Excalidraw</span>
+        </div>
+        <div class="card-desc">Virtual whiteboard for sketching diagrams</div>
+        <span class="card-tag">Utility</span>
+      </a>
+      <a class="card" href="https://www.remove.bg" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=remove.bg&sz=32" alt="">
+          <span class="card-name">Remove.bg</span>
+        </div>
+        <div class="card-desc">Instantly remove image backgrounds with AI</div>
+        <span class="card-tag">Image Tool</span>
+      </a>
+      <a class="card" href="https://squoosh.app" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=squoosh.app&sz=32" alt="">
+          <span class="card-name">Squoosh</span>
+        </div>
+        <div class="card-desc">Browser-based image compressor by Google</div>
+        <span class="card-tag">Utility</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- E-COMMERCE -->
+  <section class="category" data-cat="ecommerce">
+    <div class="cat-header">
+      <div class="cat-icon">🛒</div>
+      <div class="cat-title">E-commerce</div>
+      <div class="cat-line"></div>
+      <div class="cat-count" id="count-ecommerce">0 sites</div>
+    </div>
+    <div class="cards" id="cards-ecommerce">
+      <a class="card" href="https://www.gamenation.in" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=gamenation.in&sz=32" alt="">
+          <span class="card-name">GameNation</span>
+        </div>
+        <div class="card-desc">Gaming peripherals and accessories in India</div>
+        <span class="card-tag">Gaming Gear</span>
+      </a>
+      <a class="card" href="https://www.amazon.in" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=amazon.in&sz=32" alt="">
+          <span class="card-name">Amazon India</span>
+        </div>
+        <div class="card-desc">India's largest online marketplace</div>
+        <span class="card-tag">Marketplace</span>
+      </a>
+      <a class="card" href="https://www.flipkart.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=flipkart.com&sz=32" alt="">
+          <span class="card-name">Flipkart</span>
+        </div>
+        <div class="card-desc">Top Indian e-commerce for electronics and more</div>
+        <span class="card-tag">Marketplace</span>
+      </a>
+      <a class="card" href="https://www.mdcomputers.in" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=mdcomputers.in&sz=32" alt="">
+          <span class="card-name">MD Computers</span>
+        </div>
+        <div class="card-desc">PC components and tech at competitive prices</div>
+        <span class="card-tag">PC Parts</span>
+      </a>
+      <a class="card" href="https://www.vedantcomputers.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=vedantcomputers.com&sz=32" alt="">
+          <span class="card-name">Vedant Computers</span>
+        </div>
+        <div class="card-desc">PC hardware and custom build specialist in India</div>
+        <span class="card-tag">PC Parts</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- MOVIES -->
+  <section class="category" data-cat="movies">
+    <div class="cat-header">
+      <div class="cat-icon">🎬</div>
+      <div class="cat-title">Movies / Films</div>
+      <div class="cat-line"></div>
+      <div class="cat-count" id="count-movies">0 sites</div>
+    </div>
+    <div class="cards" id="cards-movies">
+      <a class="card" href="https://www.themoviedb.org" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=themoviedb.org&sz=32" alt="">
+          <span class="card-name">TMDB</span>
+        </div>
+        <div class="card-desc">Movie and TV database with ratings and info</div>
+        <span class="card-tag">Database</span>
+      </a>
+      <a class="card" href="https://letterboxd.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=letterboxd.com&sz=32" alt="">
+          <span class="card-name">Letterboxd</span>
+        </div>
+        <div class="card-desc">Social film diary and movie discovery</div>
+        <span class="card-tag">Community</span>
+      </a>
+      <a class="card" href="https://fmovies.ps" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=fmovies.ps&sz=32" alt="">
+          <span class="card-name">FMovies</span>
+        </div>
+        <div class="card-desc">Watch movies and TV shows online for free</div>
+        <span class="card-tag">Streaming</span>
+      </a>
+      <a class="card" href="https://lookmovie2.to" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=lookmovie2.to&sz=32" alt="">
+          <span class="card-name">LookMovie</span>
+        </div>
+        <div class="card-desc">HD movies and series with subtitles support</div>
+        <span class="card-tag">Streaming</span>
+      </a>
+      <a class="card" href="https://www.imdb.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=imdb.com&sz=32" alt="">
+          <span class="card-name">IMDb</span>
+        </div>
+        <div class="card-desc">Internet Movie Database — ratings, cast, trailers</div>
+        <span class="card-tag">Database</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ANIME -->
+  <section class="category" data-cat="anime">
+    <div class="cat-header">
+      <div class="cat-icon">✨</div>
+      <div class="cat-title">Anime</div>
+      <div class="cat-line"></div>
+      <div class="cat-count" id="count-anime">0 sites</div>
+    </div>
+    <div class="cards" id="cards-anime">
+      <a class="card" href="https://myanimelist.net" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=myanimelist.net&sz=32" alt="">
+          <span class="card-name">MyAnimeList</span>
+        </div>
+        <div class="card-desc">Track and discover anime with ratings and lists</div>
+        <span class="card-tag">Tracker</span>
+      </a>
+      <a class="card" href="https://anilist.co" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=anilist.co&sz=32" alt="">
+          <span class="card-name">AniList</span>
+        </div>
+        <div class="card-desc">Modern anime and manga tracking platform</div>
+        <span class="card-tag">Tracker</span>
+      </a>
+      <a class="card" href="https://hianime.to" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=hianime.to&sz=32" alt="">
+          <span class="card-name">HiAnime</span>
+        </div>
+        <div class="card-desc">Watch anime online with sub and dub options</div>
+        <span class="card-tag">Streaming</span>
+      </a>
+      <a class="card" href="https://animesuge.to" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=animesuge.to&sz=32" alt="">
+          <span class="card-name">AnimeSuge</span>
+        </div>
+        <div class="card-desc">Free anime streaming with fast servers</div>
+        <span class="card-tag">Streaming</span>
+      </a>
+      <a class="card" href="https://www.crunchyroll.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=crunchyroll.com&sz=32" alt="">
+          <span class="card-name">Crunchyroll</span>
+        </div>
+        <div class="card-desc">Official anime streaming platform (legal)</div>
+        <span class="card-tag">Official</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- GENERAL -->
+  <section class="category" data-cat="general">
+    <div class="cat-header">
+      <div class="cat-icon">🌐</div>
+      <div class="cat-title">General Use</div>
+      <div class="cat-line"></div>
+      <div class="cat-count" id="count-general">0 sites</div>
+    </div>
+    <div class="cards" id="cards-general">
+      <a class="card" href="https://github.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=github.com&sz=32" alt="">
+          <span class="card-name">GitHub</span>
+        </div>
+        <div class="card-desc">Code hosting and open-source collaboration</div>
+        <span class="card-tag">Dev</span>
+      </a>
+      <a class="card" href="https://www.reddit.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=reddit.com&sz=32" alt="">
+          <span class="card-name">Reddit</span>
+        </div>
+        <div class="card-desc">News, discussions, and communities for everything</div>
+        <span class="card-tag">Community</span>
+      </a>
+      <a class="card" href="https://archive.org" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=archive.org&sz=32" alt="">
+          <span class="card-name">Internet Archive</span>
+        </div>
+        <div class="card-desc">Wayback Machine + digital library of the internet</div>
+        <span class="card-tag">Archive</span>
+      </a>
+      <a class="card" href="https://www.wolframalpha.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=wolframalpha.com&sz=32" alt="">
+          <span class="card-name">Wolfram Alpha</span>
+        </div>
+        <div class="card-desc">Computational knowledge engine for math and science</div>
+        <span class="card-tag">Tool</span>
+      </a>
+      <a class="card" href="https://12ft.io" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=12ft.io&sz=32" alt="">
+          <span class="card-name">12ft.io</span>
+        </div>
+        <div class="card-desc">Bypass paywalls on news articles</div>
+        <span class="card-tag">Bypass</span>
+      </a>
+      <a class="card" href="https://www.speedtest.net" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=speedtest.net&sz=32" alt="">
+          <span class="card-name">Speedtest</span>
+        </div>
+        <div class="card-desc">Test your internet connection speed</div>
+        <span class="card-tag">Utility</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- MANGA -->
+  <section class="category" data-cat="manga">
+    <div class="cat-header">
+      <div class="cat-icon">📖</div>
+      <div class="cat-title">Manga</div>
+      <div class="cat-line"></div>
+      <div class="cat-count" id="count-manga">0 sites</div>
+    </div>
+    <div class="cards" id="cards-manga">
+      <a class="card" href="https://mangadex.org" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=mangadex.org&sz=32" alt="">
+          <span class="card-name">MangaDex</span>
+        </div>
+        <div class="card-desc">Community-driven manga reader with 35k+ titles</div>
+        <span class="card-tag">Reader</span>
+      </a>
+      <a class="card" href="https://tcbscans.me" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=tcbscans.me&sz=32" alt="">
+          <span class="card-name">TCB Scans</span>
+        </div>
+        <div class="card-desc">Fast unofficial scans for top weekly manga</div>
+        <span class="card-tag">Scanlation</span>
+      </a>
+      <a class="card" href="https://www.viz.com/shonenjump" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=viz.com&sz=32" alt="">
+          <span class="card-name">Shonen Jump</span>
+        </div>
+        <div class="card-desc">Official Shonen Jump manga, first 3 chapters free</div>
+        <span class="card-tag">Official</span>
+      </a>
+      <a class="card" href="https://mangakakalot.com" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=mangakakalot.com&sz=32" alt="">
+          <span class="card-name">Mangakakalot</span>
+        </div>
+        <div class="card-desc">Large manga library with fast loading</div>
+        <span class="card-tag">Reader</span>
+      </a>
+      <a class="card" href="https://bato.to" target="_blank" rel="noopener">
+        <div class="card-top">
+          <img class="card-favicon" src="https://www.google.com/s2/favicons?domain=bato.to&sz=32" alt="">
+          <span class="card-name">Bato.to</span>
+        </div>
+        <div class="card-desc">Comic reader supporting scanlators directly</div>
+        <span class="card-tag">Reader</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Empty state -->
+  <div class="empty-state" id="emptyState">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <p style="font-family:'Space Mono',monospace;font-size:13px;">No results found</p>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-credit">
+    Crafted by <strong>Ayush</strong> &mdash; a personal tab without bookmarks.
+  </div>
+  <div class="footer-right">index.html · github.com</div>
+</footer>
+
+<script>
+  // ── COUNT BADGES ──
+  document.querySelectorAll('.category').forEach(sec => {
+    const cat = sec.dataset.cat;
+    const count = sec.querySelectorAll('.card').length;
+    const badge = document.getElementById('count-' + cat);
+    if (badge) badge.textContent = count + ' site' + (count !== 1 ? 's' : '');
+  });
+
+  // ── CATEGORY FILTER ──
+  const pills = document.querySelectorAll('.cat-pill');
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const filter = pill.dataset.filter;
+      document.querySelectorAll('.category').forEach(sec => {
+        if (filter === 'all' || sec.dataset.cat === filter) {
+          sec.classList.remove('hidden');
+        } else {
+          sec.classList.add('hidden');
+        }
+      });
+      // reset search
+      document.getElementById('search').value = '';
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('search-hidden'));
+      document.getElementById('emptyState').classList.remove('show');
+    });
+  });
+
+  // ── SEARCH ──
+  const searchInput = document.getElementById('search');
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase().trim();
+    // reset pill
+    pills.forEach(p => p.classList.remove('active'));
+    document.querySelector('[data-filter="all"]').classList.add('active');
+    document.querySelectorAll('.category').forEach(sec => sec.classList.remove('hidden'));
+
+    let anyVisible = false;
+    document.querySelectorAll('.category').forEach(sec => {
+      let catHasResult = false;
+      sec.querySelectorAll('.card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (!q || text.includes(q)) {
+          card.classList.remove('search-hidden');
+          catHasResult = true;
+          anyVisible = true;
+        } else {
+          card.classList.add('search-hidden');
+        }
+      });
+      if (!q || catHasResult) {
+        sec.classList.remove('hidden');
+      } else {
+        sec.classList.add('hidden');
+      }
+    });
+    document.getElementById('emptyState').classList.toggle('show', q && !anyVisible);
+  });
+
+  // ── CTRL+K FOCUS ──
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
+  });
+</script>
+</body>
+</html>
